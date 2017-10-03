@@ -1,0 +1,5 @@
+h2= essay.title
+if user.hasRole('writer')
+  p Status: #{essay._editor ? 'Taken' : 'Not Taken'}
+p
+  a.btn.btn-default(href=essay.link, role='button', target='_blank') View essay »

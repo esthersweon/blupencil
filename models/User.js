@@ -3,10 +3,14 @@ const crypto = require('crypto');
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-  email: { type: String, unique: true },
+  email: { type: String, unique: true, required: true },
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
+  roles: [{
+    type: String,
+    enum: ["writer", "editor", "admin"]
+  }],
 
   facebook: String,
   twitter: String,
@@ -31,6 +35,8 @@ const userSchema = new mongoose.Schema({
  */
 userSchema.pre('save', function save(next) {
   const user = this;
+
+  if (user.roles.length == 0) { user.roles.push('writer'); }
   if (!user.isModified('password')) { return next(); }
   bcrypt.genSalt(10, (err, salt) => {
     if (err) { return next(err); }
@@ -63,6 +69,10 @@ userSchema.methods.gravatar = function gravatar(size) {
   }
   const md5 = crypto.createHash('md5').update(this.email).digest('hex');
   return `https://gravatar.com/avatar/${md5}?s=${size}&d=retro`;
+};
+
+userSchema.methods.hasRole = function isWriter(role) {
+  return this.roles.indexOf(role) !== -1;
 };
 
 const User = mongoose.model('User', userSchema);

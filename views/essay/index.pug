@@ -1,0 +1,33 @@
+extends ../layout
+
+block content
+  h1 My Essays
+  if user.hasRole('writer')
+    p.lead Status of submitted essays.
+  else if user.hasRole('editor')
+    p.lead Status of assigned essays.
+  hr
+  .row
+    for essay in essays
+      .col-sm-6
+        include ../partials/essay
+        if user.hasRole('editor') 
+          if essay.revised
+            p 
+              i.fa.fa-user-plus 
+              | FINISHED
+            form(id='submit-revision-form', action=`/essays/${essay.id}?_method=PATCH`, method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              input(type='hidden', name='revised', value=`false`)
+              .form-group
+                button.btn.btn-warning(type='submit')
+                  i.fa.fa-user-plus
+                  | Not finished revising »
+          else
+            form(id='submit-revision-form', action=`/essays/${essay.id}?_method=PATCH`, method='POST')
+              input(type='hidden', name='_csrf', value=_csrf)
+              input(type='hidden', name='revised', value=`true`)
+              .form-group
+                button.btn.btn-success(type='submit')
+                  i.fa.fa-user-plus
+                  | Mark as finished revising »

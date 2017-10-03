@@ -13,8 +13,9 @@ const flash = require('express-flash');
 const path = require('path');
 const passport = require('passport');
 const expressValidator = require('express-validator');
-const expressStatusMonitor = require('express-status-monitor');
+// const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
+const methodOverride = require('method-override');
 const routes = require('./server').routes;
 const connectToMongo = require('./server').connectToMongo;
 
@@ -34,14 +35,15 @@ app.set('port', process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 8080);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(expressStatusMonitor());
-app.use(compression());
+// app.use(expressStatusMonitor());
+// app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(methodOverride('_method'))
 app.use(expressValidator());
-app.use(lusca.xframe('SAMEORIGIN'));
-app.use(lusca.xssProtection(true));
+// app.use(lusca.xframe('SAMEORIGIN'));
+// app.use(lusca.xssProtection(true));
 
 app.use(sass({
   src: path.join(__dirname, 'public'),
@@ -63,9 +65,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
-app.use((req, res, next) => {
-  req.path === '/api/upload' ? next() : lusca.csrf()(req, res, next);
-});
+// app.use((req, res, next) => {
+//   req.path === '/api/upload' ? next() : lusca.csrf()(req, res, next);
+// });
 
 app.use((req, res, next) => {
   res.locals.user = req.user;
@@ -88,8 +90,9 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }))
 // Routes
 app.get('/', homeController.index);
 routes.userAccount(app);
-routes.thirdPartyApi(app);
-routes.oauth(app, passport);
+routes.essay(app);
+// routes.thirdPartyApi(app);
+// routes.oauth(app, passport);
 
 app.use(errorHandler());
 

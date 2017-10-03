@@ -1,9 +1,9 @@
 module.exports = function(app) {
-  const apiController = require('../controllers/api');
+  const apiController = require('../../controllers/api');
   const multer = require('multer');
   const path = require('path');
   const upload = multer({ dest: path.join(__dirname, 'uploads') });
-  const passportConfig = require('../config/passport');
+  const passportConfig = require('../../config/passport');
 
   app.get('/api', apiController.getApi);
   app.get('/api/lastfm', apiController.getLastfm);

@@ -1,0 +1,20 @@
+extends ../layout
+
+block content
+  .page-header
+    h3 Submit Essay
+  form.form-horizontal(id='new-essay-form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label.col-sm-3.control-label(for='title') Title
+      .col-sm-7
+        input.form-control(type='title', name='title', id='title', placeholder='Title', autofocus, required)
+    .form-group
+      label.col-sm-3.control-label(for='link') Google Drive Link
+      .col-sm-7
+        input.form-control(type='text', name='link', id='link', placeholder='Google Drive Link', required)
+    .form-group
+      .col-sm-offset-3.col-sm-7
+        button.btn.btn-success(type='submit')
+          i.fa.fa-user-plus
+          | Submit Essay

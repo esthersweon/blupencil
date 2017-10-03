@@ -1,7 +1,7 @@
 module.exports = function(app) {
-  const passportConfig = require('../config/passport');
-  const userController = require('../controllers/user');
-  const contactController = require('../controllers/contact');
+  const passportConfig = require('../../config/passport');
+  const userController = require('../../controllers/user');
+  const contactController = require('../../controllers/contact');
 
   app.get('/login', userController.getLogin);
   app.post('/login', userController.postLogin);
