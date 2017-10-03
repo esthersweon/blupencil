@@ -39,6 +39,7 @@ cd blupencil
 
 # Install NPM dependencies
 npm install
+npm install -g nodemon
 
 # Then simply start your app
 npm start
