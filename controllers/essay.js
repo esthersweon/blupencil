@@ -43,16 +43,20 @@ exports.postNew = (req, res) => {
 }
 
 exports.updateEssay = (req, res) => {
-  const essayId = req.params.essayId,
-        updatePayload = {
-          _editor: req.user.id,
-          revised: req.body.revised || false
-        };
-  console.log(req.body);
-  console.log('***', req.params)
+  const updatePayload = {
+    _editor: req.user.id,
+    revised: req.body.revised || false
+  };
 
-  Essay.update({ _id: essayId }, updatePayload, (err, essay) => {
+  Essay.update({ _id: req.params.essayId }, updatePayload, (err, essay) => {
     if (err) { return next(err); }
     res.redirect('/essays');
   });
+}
+
+exports.deleteEssay = (req, res) => {
+  Essay.find({ _id: req.params.essayId }).remove((err, essay) => {
+    if (err) { return next(err); }
+    res.redirect('/essays');
+  })
 }

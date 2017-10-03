@@ -5,5 +5,6 @@ module.exports = function(app) {
   app.get('/essays', essayController.index);
   app.get('/essays/new', essayController.getNew);
   app.post('/essays/new', essayController.postNew);
-  app.patch('/essays/:essayId', essayController.updateEssay)
+  app.patch('/essays/:essayId', essayController.updateEssay);
+  app.delete('/essays/:essayId', essayController.deleteEssay);
 }

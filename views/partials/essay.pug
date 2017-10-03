@@ -1,5 +1,16 @@
 h2= essay.title
 if user.hasRole('writer')
   p Status: #{essay._editor ? 'Taken' : 'Not Taken'}
+  if essay._editor
+    button.btn.btn-success
+      i.fa.fa-user-plus
+      | Message Editor »
+  else
+    form(id='delete-essay-form', action=`/essays/${essay.id}?_method=DELETE`, method='POST')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        button.btn.btn-danger(type='submit')
+          i.fa.fa-user-plus
+          | Delete essay »
 p
   a.btn.btn-default(href=essay.link, role='button', target='_blank') View essay »
